@@ -1,0 +1,99 @@
+.problem-img {
+  display: block;
+  max-width: 100%;
+  margin: 1.2em auto 1.2em auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #f8b6d855;
+}
+body {
+  background: #ffeef5;
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+header, footer {
+  text-align: center;
+  padding: 1.5em 0;
+  background: #b3d0ee;
+}
+h1 {
+  color: #1a3557;
+  margin-bottom: 0.2em;
+}
+main {
+  max-width: 600px;
+  margin: 40px auto;
+}
+.problem-block {
+  background: #fff6fa;
+  border-radius: 24px;
+  box-shadow: 0 4px 16px #f8b6d8aa;
+  margin-bottom: 40px;
+  padding: 2em 1.5em 1.5em 1.5em;
+  border: 2px solid #ffd6e6;
+  box-sizing: border-box;
+}
+.problem-title {
+  display: inline-block;
+  background: #ffb6d5;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1em;
+  border-radius: 12px;
+  padding: 0.3em 1.2em;
+  margin-bottom: 1em;
+}
+.problem-canvas {
+  display: block;
+  background: #fff0f7;
+  border: 2px dashed #ffb6d5;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #f8b6d855;
+  margin: 0 auto 1.5em auto;
+  width: 100%;
+  max-width: 600px;
+  height: 260px;
+  box-sizing: border-box;
+  cursor: crosshair;
+}
+.button-row {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+}
+.problem-btn {
+  flex: 1;
+  padding: 0.7em 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.problem-btn.save {
+  background: #ff6fa7;
+  color: #fff;
+}
+.problem-btn.save:hover {
+  background: #e0558c;
+}
+.problem-btn.clear {
+  background: #fff;
+  color: #ff6fa7;
+  border: 2px solid #ffb6d5;
+}
+.problem-btn.clear:hover {
+  background: #ffeef5;
+}
+@media (max-width: 600px) {
+  main {
+    padding: 0 0.5em;
+  }
+  .problem-block {
+    padding: 1em;
+  }
+  .problem-pad {
+    min-height: 80px;
+  }
+} 
