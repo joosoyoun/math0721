@@ -23,7 +23,27 @@ async function saveCanvas(index) {
     alert("✅ 저장되었습니다!");
   }
 }
-// 그림판 기능 및 저장/불러오기/지우기
+// 그림판 기능 및 async function loadCanvas(index) {
+  const studentName = localStorage.getItem("studentName");
+  if (!studentName) return;
+
+  const { data } = await supabase
+    .from("drawings")
+    .select("*")
+    .eq("student_name", studentName)
+    .eq("canvas_index", index)
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  if (data && data.length > 0) {
+    const canvas = document.getElementById(`canvas${index}`);
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.onload = () => ctx.drawImage(img, 0, 0);
+    img.src = data[0].image_data;
+  }
+}
+저장/불러오기/지우기
 const CANVAS_COUNT = 5;
 
 for (let i = 0; i < CANVAS_COUNT; i++) {
