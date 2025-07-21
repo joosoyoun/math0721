@@ -1,9 +1,4 @@
 
-window.onload = () => {
-  for (let i = 0; i < 5; i++) {
-    loadCanvas(i);
-  }
-};
 async function saveCanvas(index) {
   const canvas = document.getElementById(`canvas${index}`);
   const image = canvas.toDataURL('image/png');
