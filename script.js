@@ -107,3 +107,13 @@ window.onload = () => {
     loadCanvas(i);  // 저장된 그림 자동 복원
   }
 };
+function saveName() {
+  const name = document.getElementById("studentNameInput").value;
+  if (name) {
+    localStorage.setItem("studentName", name);
+    alert(`${name} 님 환영합니다!`);
+  } else {
+    alert("이름을 입력해주세요!");
+  }
+}
+
