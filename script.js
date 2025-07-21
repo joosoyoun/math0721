@@ -1,4 +1,3 @@
-
 // 그림판 기능 및 async function loadCanvas(index) {
   const studentName = localStorage.getItem("studentName");
   if (!studentName) return;
@@ -123,18 +122,3 @@ async function loadCanvas(index) {
     img.src = data[0].image_data;
   }
 }
-window.onload = () => {
-  for (let i = 0; i < CANVAS_COUNT; i++) {
-    loadCanvas(i);  // 저장된 그림 자동 복원
-  }
-};
-function saveName() {
-  const name = document.getElementById("studentNameInput").value;
-  if (name) {
-    localStorage.setItem("studentName", name);
-    alert(`${name} 님 환영합니다!`);
-  } else {
-    alert("이름을 입력해주세요!");
-  }
-}
-
