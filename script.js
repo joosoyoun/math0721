@@ -79,3 +79,31 @@ function clearCanvas(idx) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   localStorage.removeItem('canvas' + idx);
 } 
+
+async function loadCanvas(index) {
+  const studentName = localStorage.getItem("studentName");
+  if (!studentName) return;
+
+  const { data, error } = await supabase
+    .from("drawings")
+    .select("*")
+    .eq("student_name", studentName)
+    .eq("canvas_index", index)
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  if (data && data.length > 0) {
+    const canvas = document.getElementById(`canvas${index}`);
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0);
+    };
+    img.src = data[0].image_data;
+  }
+}
+window.onload = () => {
+  for (let i = 0; i < CANVAS_COUNT; i++) {
+    loadCanvas(i);  // 저장된 그림 자동 복원
+  }
+};
