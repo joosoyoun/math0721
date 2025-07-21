@@ -1,29 +1,4 @@
 
-async function saveCanvas(index) {
-  const canvas = document.getElementById(`canvas${index}`);
-  const image = canvas.toDataURL('image/png');
-  const studentName = localStorage.getItem("studentName");
-
-  if (!studentName) {
-    alert("이름을 먼저 입력해주세요!");
-    return;
-  }
-
-  const { error } = await supabase.from('drawings').insert([
-    {
-      student_name: studentName,
-      canvas_index: index,
-      image_data: image
-    }
-  ]);
-
-  if (error) {
-    alert("저장 중 오류가 발생했습니다.");
-    console.error(error);
-  } else {
-    alert("✅ 저장되었습니다!");
-  }
-}
 // 그림판 기능 및 async function loadCanvas(index) {
   const studentName = localStorage.getItem("studentName");
   if (!studentName) return;
