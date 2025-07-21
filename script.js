@@ -1,65 +1,57 @@
-
-import { supabase } from './supabase.js';
-
-const canvases = document.querySelectorAll('canvas');
-let studentName = '';
-
-document.getElementById('saveNameBtn').addEventListener('click', () => {
-  studentName = document.getElementById('studentNameInput').value;
-  if (!studentName) return alert('학생 이름을 입력하세요.');
-  document.getElementById('nameBlock').style.display = 'none';
-  loadAllCanvases();
-});
-
 canvases.forEach((canvas, idx) => {
   const ctx = canvas.getContext('2d');
   let painting = false;
 
-  canvas.addEventListener('mousedown', () => painting = true);
-  canvas.addEventListener('mouseup', () => painting = false);
-  canvas.addEventListener('mousemove', draw);
+  // 터치 위치 계산 함수
+  function getPos(e) {
+    if (e.touches) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: e.touches[0].clientX - rect.left,
+        y: e.touches[0].clientY - rect.top
+      };
+    } else {
+      return {
+        x: e.offsetX,
+        y: e.offsetY
+      };
+    }
+  }
+
+  function startDraw(e) {
+    painting = true;
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+  }
+
+  function endDraw() {
+    painting = false;
+    ctx.beginPath();
+  }
 
   function draw(e) {
     if (!painting) return;
+    const pos = getPos(e);
     ctx.lineWidth = 2;
     ctx.lineCap = 'round';
     ctx.strokeStyle = '#000';
-    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.lineTo(pos.x, pos.y);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(e.offsetX, e.offsetY);
+    ctx.moveTo(pos.x, pos.y);
+    e.preventDefault(); // 터치 스크롤 방지
   }
+
+  // 마우스 이벤트
+  canvas.addEventListener('mousedown', startDraw);
+  canvas.addEventListener('mouseup', endDraw);
+  canvas.addEventListener('mouseout', endDraw);
+  canvas.addEventListener('mousemove', draw);
+
+  // 터치 이벤트
+  canvas.addEventListener('touchstart', startDraw);
+  canvas.addEventListener('touchend', endDraw);
+  canvas.addEventListener('touchcancel', endDraw);
+  canvas.addEventListener('touchmove', draw);
 });
-
-async function loadAllCanvases() {
-  for (let i = 0; i < canvases.length; i++) {
-    const { data, error } = await supabase
-      .from('drawings')
-      .select('image_data')
-      .eq('student_name', studentName + '_' + i)
-      .single();
-
-    if (data) {
-      const img = new Image();
-      img.onload = () => canvases[i].getContext('2d').drawImage(img, 0, 0);
-      img.src = data.image_data;
-    }
-  }
-}
-
-window.clearCanvas = function(idx) {
-  const canvas = canvases[idx];
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-};
-
-window.saveCanvas = async function(idx) {
-  if (!studentName) return alert('학생 이름을 먼저 입력하세요.');
-  const canvas = canvases[idx];
-  const dataUrl = canvas.toDataURL();
-  await supabase.from('drawings').upsert({
-    student_name: studentName + '_' + idx,
-    image_data: dataUrl
-  });
-  alert('저장되었습니다!');
-};
